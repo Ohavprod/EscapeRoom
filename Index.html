@@ -3,346 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>הרפתקה בירושלים: משחק אלו מציאות</title>
-    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;700;800&display=swap" rel="stylesheet">
+    <title>הכספת של רבי מאיר | חדר בריחה אלו מציאות</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg-dark: #1e1e24;
-            --accent: #ff9f1c;
-            --correct: #2ec4b6;
-            --wrong: #e71d36;
-            --box-bg: #2b2b36;
+        * {
+            box-sizing: border-box;
+            user-select: none;
         }
 
         body {
-            font-family: 'Assistant', sans-serif;
-            background-color: var(--bg-dark);
+            font-family: 'Rubik', sans-serif;
+            background: #111;
+            background-image: radial-gradient(circle at 50% 50%, #2a2a35 0%, #000000 100%);
             color: white;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            min-height: 100vh;
             overflow: hidden;
-            background-image: radial-gradient(circle, #2b2b36 10%, #1e1e24 80%);
         }
 
-        .game-container {
-            width: 100%;
-            max-width: 800px;
-            height: 90vh;
-            background: rgba(255, 255, 255, 0.05);
-            border: 2px solid var(--accent);
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(255, 159, 28, 0.2);
-            position: relative;
-            overflow: hidden;
+        .game-area {
             display: flex;
             flex-direction: column;
             align-items: center;
-        }
-
-        .level {
-            display: none;
+            gap: 30px;
             width: 100%;
-            height: 100%;
+            max-width: 900px;
             padding: 20px;
-            box-sizing: border-box;
-            text-align: center;
-            animation: slideIn 0.5s forwards;
         }
 
-        .level.active {
+        /* ----- Clues Parchment ----- */
+        .clues-board {
+            background: #f4e8c1;
+            color: #3b2818;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 20px rgba(139, 69, 19, 0.3);
+            border: 2px solid #b8860b;
+            text-align: center;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .clues-board h1 {
+            margin: 0 0 15px 0;
+            color: #8b4513;
+            font-size: 2rem;
+            text-shadow: 1px 1px 0px rgba(255,255,255,0.5);
+        }
+
+        .clue {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            font-weight: bold;
+            background: rgba(139, 69, 19, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+        }
+
+        /* ----- The Padlock ----- */
+        .padlock-container {
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin-top: 40px;
         }
 
-        h1 {
-            color: var(--accent);
-            font-size: 2.5rem;
-            text-shadow: 0 0 10px rgba(255,159,28,0.5);
-            margin-top: 10px;
-        }
-
-        p {
-            font-size: 1.3rem;
-            max-width: 600px;
-        }
-
-        .btn {
-            background: var(--accent);
-            color: #1e1e24;
-            font-size: 1.5rem;
-            font-weight: bold;
-            padding: 15px 40px;
-            border: none;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 20px;
-            box-shadow: 0 5px 15px rgba(255,159,28,0.4);
-        }
-
-        .btn:hover {
-            transform: scale(1.1);
-            background: #ffb703;
-        }
-
-        /* --- Level 1: Catch the Cow --- */
-        .field-area {
-            width: 100%;
-            height: 300px;
-            background: #4a5d23; /* ירוק שדה */
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            margin-top: 20px;
-            border: 3px solid #2d3816;
-            cursor: crosshair;
-        }
-
-        .cow {
-            font-size: 3rem;
+        /* The Shackle (הקשת של המנעול) */
+        .shackle {
+            width: 140px;
+            height: 120px;
+            border: 25px solid #bdc3c7;
+            border-bottom: none;
+            border-radius: 70px 70px 0 0;
             position: absolute;
-            top: 50%;
-            left: -10%;
-            cursor: pointer;
-            transition: transform 0.1s;
-            animation: runCow 4s linear infinite;
+            top: -100px;
+            z-index: 1;
+            background: transparent;
+            box-shadow: inset 0 10px 10px rgba(0,0,0,0.5), 0 -5px 10px rgba(0,0,0,0.5);
+            transition: all 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
-        .cow:active {
-            transform: scale(0.8);
+        /* Locked vs Unlocked state */
+        .shackle.unlocked {
+            transform: translateY(-50px) rotate(-15deg);
+            transform-origin: left bottom;
+            border-color: #f1c40f; /* הופך לזהב כשנפתח */
         }
 
-        @keyframes runCow {
-            0% { left: -10%; top: 20%; }
-            25% { top: 60%; }
-            50% { top: 10%; }
-            75% { top: 70%; }
-            100% { left: 110%; top: 40%; }
-        }
-
-        /* --- Level 2: Drag and Drop --- */
-        .drag-area {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-            margin-top: 30px;
-        }
-
-        .items-container {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
-
-        .draggable {
-            font-size: 3.5rem;
-            cursor: grab;
-            background: rgba(255,255,255,0.1);
-            padding: 10px;
-            border-radius: 15px;
-            border: 2px dashed #fff;
-            transition: 0.2s;
-        }
-        
-        .draggable:active { cursor: grabbing; transform: scale(1.1); }
-
-        .drop-zone {
-            width: 40%;
+        /* The Lock Body (גוף המנעול) */
+        .lock-body {
+            background: linear-gradient(135deg, #434343 0%, #1c1c1c 100%);
+            width: 280px;
             height: 200px;
-            background: var(--box-bg);
-            border: 4px dashed var(--accent);
-            border-radius: 15px;
+            border-radius: 20px;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9), inset 0 5px 15px rgba(255,255,255,0.2);
+            border: 4px solid #2c3e50;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: 0.3s;
+            padding: 20px;
         }
 
-        .drop-zone h3 { margin: 0; font-size: 1.5rem; color: #fff; }
-        .drop-zone.hovered { background: rgba(255, 159, 28, 0.2); transform: scale(1.05); }
+        .wheels-container {
+            display: flex;
+            gap: 15px;
+            background: #000;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: inset 0 5px 20px rgba(0,0,0,0.9);
+            border: 2px solid #555;
+        }
+
+        /* Individual Number Wheel */
+        .wheel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 50px;
+        }
+
+        .arrow {
+            color: #7f8c8d;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+            transition: 0.2s;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+        .arrow:hover {
+            color: #f1c40f;
+            transform: scale(1.2);
+        }
+
+        .arrow:active {
+            transform: scale(0.9);
+        }
+
+        .number-display {
+            background: linear-gradient(to bottom, #ecf0f1 0%, #bdc3c7 100%);
+            color: #2c3e50;
+            font-size: 2.5rem;
+            font-weight: 900;
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            margin: 5px 0;
+            box-shadow: inset 0 3px 5px rgba(0,0,0,0.3), 0 2px 5px rgba(0,0,0,0.5);
+            font-family: monospace;
+        }
+
+        .unlock-btn {
+            margin-top: 20px;
+            background: linear-gradient(to bottom, #e74c3c, #c0392b);
+            color: white;
+            border: 2px solid #900;
+            padding: 10px 30px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            font-family: 'Rubik', sans-serif;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            transition: 0.2s;
+        }
+
+        .unlock-btn:hover {
+            background: linear-gradient(to bottom, #ff4757, #e84118);
+            transform: translateY(-2px);
+        }
+
+        .unlock-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
 
         /* Animations */
-        @keyframes slideIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        .shake {
+            animation: lockShake 0.4s ease-in-out;
         }
 
-        .shake { animation: shake 0.4s; }
-        @keyframes shake {
+        @keyframes lockShake {
             0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-10px); }
-            75% { transform: translateX(10px); }
+            20%, 60% { transform: translateX(-15px) rotate(-2deg); }
+            40%, 80% { transform: translateX(15px) rotate(2deg); }
         }
 
-        /* Confetti */
-        .confetti {
+        /* Success Overlay */
+        .success-screen {
             position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: var(--accent);
-            animation: fall 2s linear forwards;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            text-align: center;
+            animation: fadeIn 1s forwards;
         }
-        @keyframes fall {
-            to { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+
+        .success-screen h1 {
+            color: #f1c40f;
+            font-size: 4rem;
+            margin: 0;
+            text-shadow: 0 0 30px rgba(241, 196, 15, 0.5);
         }
+
+        .success-screen p {
+            font-size: 1.5rem;
+            color: white;
+            max-width: 600px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
     </style>
 </head>
 <body>
 
-    <div class="game-container">
+    <div class="game-area">
         
-        <div id="level0" class="level active">
-            <h1>המרוץ למשנה! 🏃‍♂️</h1>
-            <p>שכחו מטפסים משעממים. כאן אתם צריכים ידיים מהירות וראש חד כדי להוכיח שאתם שולטים בפרק "אלו מציאות".<br><br>במשחק הזה תצטרכו לתפוס חיות אבודות, לגרור חפצים לסלים הנכונים ולפצח את המקרים.</p>
-            <button class="btn" onclick="nextLevel(0, 1)">יאללה, בואו נתחיל!</button>
-        </div>
-
-        <div id="level1" class="level">
-            <h1>שלב 1: איזו היא אבדה?</h1>
-            <p>משנה ט': "פרה רצה בין הכרמים - הרי זו אבדה". <br><strong>משימה:</strong> תפסו את הפרה שרצה בשדה בעזרת העכבר (הקליקו עליה)!</p>
-            <div class="field-area">
-                <div class="cow" onclick="catchCow()">🐄</div>
-            </div>
-            <p id="cowMessage" style="color: var(--accent); font-weight: bold; height: 30px;"></p>
-            <button class="btn" id="btnNext1" style="display: none;" onclick="nextLevel(1, 2)">המשך לשלב המיון</button>
-        </div>
-
-        <div id="level2" class="level">
-            <h1>שלב 2: שוק המציאות</h1>
-            <p>גררו את המציאות מהמדף למעלה אל הסל הנכון למטה, לפי ההלכה.</p>
+        <div class="clues-board">
+            <h1>הכספת של רבי מאיר 📜</h1>
+            <p>מצאתם מנעול עתיק שנועל את אוצרות בית הדין. כדי לפתוח אותו, עליכם להזיז את הגלגלים ולמצוא את הקוד הסודי שמורכב מ-3 ספרות. קראו את הרמזים:</p>
             
-            <div class="items-container" id="itemsBlock">
-                <div class="draggable" draggable="true" id="item1" data-target="keep">💰<br><span style="font-size:1rem">מעות מפוזרות</span></div>
-                <div class="draggable" draggable="true" id="item2" data-target="announce">🥖<br><span style="font-size:1rem">כיכרות בעל הבית</span></div>
-                <div class="draggable" draggable="true" id="item3" data-target="keep">🏺<br><span style="font-size:1rem">כלי אנפוריא</span></div>
-            </div>
-
-            <div class="drag-area">
-                <div class="drop-zone" id="keep">
-                    <h3>הרי אלו שלו (שמור לעצמך)</h3>
-                </div>
-                <div class="drop-zone" id="announce">
-                    <h3>חייב להכריז (חפש בעלים)</h3>
-                </div>
-            </div>
-            <p id="dragMessage" style="margin-top:20px; font-weight:bold;"></p>
-            <button class="btn" id="btnNext2" style="display: none;" onclick="nextLevel(2, 3)">המשך לשלב האחרון</button>
+            <div class="clue">ספרה 1: על כמה מטבעות שמסודרות "זו על גב זו" חייב המוצא להכריז? (משנה ב')</div>
+            <div class="clue">ספרה 2: "החזירה וברחה..." אפילו ארבעה ו_____ פעמים חייב להחזיר? (משנה ט')</div>
+            <div class="clue">ספרה 3: "היה בטל מסלע..." - כמה סלעים (מטבעות) הפסיד הפועל שמוזכר במשנה?</div>
         </div>
 
-        <div id="level3" class="level">
-            <h1 style="font-size: 4rem;">🏆 אלופי המשנה! 🏆</h1>
-            <p>כל הכבוד! תפסתם את הפרה, מיינתם את המציאות בצורה מדויקת והוכחתם שליטה מלאה בחומר של מסכת בבא מציעא.</p>
-            <button class="btn" onclick="location.reload()">שחק שוב פעם</button>
+        <div class="padlock-container">
+            <div class="shackle" id="shackle"></div>
+            
+            <div class="lock-body" id="lockBody">
+                <div class="wheels-container">
+                    <div class="wheel">
+                        <div class="arrow" onclick="changeDigit(0, 1)">&#9650;</div>
+                        <div class="number-display" id="digit0">0</div>
+                        <div class="arrow" onclick="changeDigit(0, -1)">&#9660;</div>
+                    </div>
+                    
+                    <div class="wheel">
+                        <div class="arrow" onclick="changeDigit(1, 1)">&#9650;</div>
+                        <div class="number-display" id="digit1">0</div>
+                        <div class="arrow" onclick="changeDigit(1, -1)">&#9660;</div>
+                    </div>
+                    
+                    <div class="wheel">
+                        <div class="arrow" onclick="changeDigit(2, 1)">&#9650;</div>
+                        <div class="number-display" id="digit2">0</div>
+                        <div class="arrow" onclick="changeDigit(2, -1)">&#9660;</div>
+                    </div>
+                </div>
+
+                <button class="unlock-btn" onclick="tryUnlock()">נסה לפתוח</button>
+            </div>
         </div>
 
     </div>
 
-    <script>
-        // --- Navigation ---
-        function nextLevel(current, next) {
-            document.getElementById('level' + current).classList.remove('active');
-            document.getElementById('level' + next).classList.add('active');
-        }
+    <div class="success-screen" id="successScreen">
+        <h1>הכספת נפתחה! 💎</h1>
+        <p>מעולה! הקוד (3-5-1) היה נכון. הוכחתם שאתם זוכרים את הפרטים הקטנים של המשניות בדיני "אלו מציאות".</p>
+        <button class="unlock-btn" style="background: #27ae60; border-color: #2ecc71;" onclick="location.reload()">שחק שוב</button>
+    </div>
 
-        // --- Level 1 Logic: Catch the Cow ---
-        let cowClicks = 0;
-        function catchCow() {
-            cowClicks++;
-            const cow = document.querySelector('.cow');
-            const msg = document.getElementById('cowMessage');
+    <script>
+        // המערך ששומר את המספרים הנוכחיים של המנעול
+        let code = [0, 0, 0];
+        
+        // הקוד הסודי שמבוסס על התשובות (3 מטבעות, 5 פעמים, סלע 1)
+        const secretCode = "351"; 
+
+        // פונקציה להזזת הגלגלים
+        function changeDigit(index, direction) {
+            code[index] += direction;
             
-            if(cowClicks === 1) {
-                msg.innerText = "החזרתם והיא ברחה שוב! (השב תשיבם) תפסו אותה שוב!";
-                cow.style.animationDuration = "2.5s"; // רצה מהר יותר
-            } else if(cowClicks === 2) {
-                msg.innerText = "שוב ברחה?! תפסו פעם שלישית!";
-                cow.style.animationDuration = "1.5s"; // מהר מאוד!
-            } else {
-                cow.style.display = "none";
-                msg.innerText = "כל הכבוד! עמדתם במצוות 'השב תשיבם' אפילו כמה פעמים!";
-                msg.style.color = "var(--correct)";
-                document.getElementById('btnNext1').style.display = "block";
-                shootConfetti();
+            // גורם למספרים להסתובב מ-0 ל-9 ובחזרה
+            if (code[index] > 9) code[index] = 0;
+            if (code[index] < 0) code[index] = 9;
+            
+            document.getElementById('digit' + index).innerText = code[index];
+            
+            // הוספת צליל קליק קטן למשוב (באמצעות ויברציה אם קיים בטלפון)
+            if (navigator.vibrate) {
+                navigator.vibrate(20);
             }
         }
 
-        // --- Level 2 Logic: Drag and Drop ---
-        const draggables = document.querySelectorAll('.draggable');
-        const dropZones = document.querySelectorAll('.drop-zone');
-        let itemsSorted = 0;
+        // פונקציה לבדיקת המנעול
+        function tryUnlock() {
+            const currentGuess = code.join(''); // הופך את המערך למחרוזת אחת
+            const lockBody = document.getElementById('lockBody');
+            const shackle = document.getElementById('shackle');
 
-        draggables.forEach(draggable => {
-            draggable.addEventListener('dragstart', () => {
-                draggable.classList.add('dragging');
-            });
-
-            draggable.addEventListener('dragend', () => {
-                draggable.classList.remove('dragging');
-            });
-        });
-
-        dropZones.forEach(zone => {
-            zone.addEventListener('dragover', e => {
-                e.preventDefault(); // חייבים את זה כדי לאפשר עזיבה
-                zone.classList.add('hovered');
-            });
-
-            zone.addEventListener('dragleave', () => {
-                zone.classList.remove('hovered');
-            });
-
-            zone.addEventListener('drop', e => {
-                e.preventDefault();
-                zone.classList.remove('hovered');
+            if (currentGuess === secretCode) {
+                // הקוד נכון - אנימציית פתיחה
+                shackle.classList.add('unlocked');
                 
-                const draggable = document.querySelector('.dragging');
-                const targetZoneId = draggable.getAttribute('data-target');
-                const dropZoneId = zone.id;
-
-                const msg = document.getElementById('dragMessage');
-
-                if (targetZoneId === dropZoneId) {
-                    // תשובה נכונה
-                    zone.appendChild(draggable);
-                    draggable.style.border = "none";
-                    draggable.setAttribute('draggable', 'false'); // מונע גרירה חוזרת
-                    msg.innerText = "אלופים! מיון מדויק!";
-                    msg.style.color = "var(--correct)";
-                    itemsSorted++;
-                    
-                    if (itemsSorted === 3) {
-                        msg.innerText = "סיימתם למיין את הכל בהצלחה!";
-                        document.getElementById('btnNext2').style.display = "block";
-                        shootConfetti();
-                    }
-                } else {
-                    // תשובה שגויה
-                    msg.innerText = "אופס! נסו שוב. האם יש בחפץ הזה סימן או לא?";
-                    msg.style.color = "var(--wrong)";
-                    draggable.classList.add('shake');
-                    setTimeout(() => draggable.classList.remove('shake'), 400);
-                }
-            });
-        });
-
-        // --- Confetti Effect ---
-        function shootConfetti() {
-            for (let i = 0; i < 50; i++) {
-                const confetti = document.createElement('div');
-                confetti.classList.add('confetti');
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.backgroundColor = ['#ff9f1c', '#2ec4b6', '#e71d36', '#fdfffc'][Math.floor(Math.random() * 4)];
-                document.body.appendChild(confetti);
-                
+                // מפעיל את מסך הניצחון אחרי שהאנימציה של המנעול מסתיימת (שנייה אחת)
                 setTimeout(() => {
-                    confetti.remove();
-                }, 2000);
+                    document.getElementById('successScreen').style.display = 'flex';
+                }, 1200);
+
+            } else {
+                // הקוד שגוי - אנימציית רעידה
+                lockBody.classList.remove('shake');
+                void lockBody.offsetWidth; // טריק לאיפוס האנימציה
+                lockBody.classList.add('shake');
+                
+                if (navigator.vibrate) {
+                    navigator.vibrate([100, 50, 100]); // רטט של שגיאה בטלפון
+                }
             }
         }
     </script>
