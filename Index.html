@@ -7,8 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-dark: #0a0a0c;
-            --metal-base: #2c3e50;
             --neon-blue: #00f3ff;
             --neon-red: #ff003c;
             --neon-green: #39ff14;
@@ -17,7 +15,7 @@
 
         body {
             font-family: 'Heebo', sans-serif;
-            background: radial-gradient(circle at center, #1a1a24 0%, #000000 100%);
+            background: #050505;
             color: var(--text-main);
             margin: 0; padding: 0;
             display: flex; justify-content: center; align-items: center;
@@ -28,81 +26,80 @@
         /* HUD & Timer */
         .hud {
             position: fixed; top: 0; left: 0; width: 100%;
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             border-bottom: 2px solid var(--neon-blue);
             box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
             display: flex; justify-content: space-between;
-            padding: 15px 30px; box-sizing: border-box; z-index: 100;
-            font-family: 'Share Tech Mono', monospace; font-size: 1.5rem; color: var(--neon-blue);
+            padding: 10px 20px; box-sizing: border-box; z-index: 100;
+            font-family: 'Share Tech Mono', monospace; font-size: 1.2rem; color: var(--neon-blue);
         }
 
-        /* The Vault Room */
+        /* The Vault Room - Responsive */
         .vault-container {
-            position: relative; width: 900px; height: 600px;
-            perspective: 1000px; margin-top: 50px;
+            position: relative; 
+            width: 95vw; max-width: 800px; 
+            height: 80vh; max-height: 600px;
+            margin-top: 40px;
         }
 
-        /* Realistic Vault Door */
+        /* Realistic Vault Door Frame */
         .door-frame {
-            position: absolute; width: 100%; height: 100%;
-            background: linear-gradient(135deg, #111, #222);
-            border: 10px solid #1a1a1a; border-radius: 20px;
-            box-shadow: inset 0 0 50px #000, 0 20px 50px rgba(0,0,0,0.9);
-            overflow: hidden; display: flex;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: #0f1418; /* The room background */
+            border: 8px solid #1a1a1a; border-radius: 15px;
+            box-shadow: inset 0 0 50px #000, 0 10px 30px rgba(0,0,0,0.8);
+            overflow: hidden; 
         }
 
+        /* The Content inside the Vault (z-index: 1 so it's under the doors) */
+        .room-content {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            padding: 20px 15px; box-sizing: border-box; text-align: center;
+            background: radial-gradient(circle, #1a252f, #05080a);
+            z-index: 1; overflow-y: auto;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        /* The sliding metal doors (z-index: 10 so they cover the content) */
         .door-panel {
-            width: 50%; height: 100%;
+            position: absolute; top: 0; width: 50%; height: 100%;
             background: linear-gradient(90deg, #2b3238, #1e2328);
-            border: 2px solid #444; position: relative;
-            transition: transform 1.5s cubic-bezier(0.77, 0, 0.175, 1);
+            border: 2px solid #444; z-index: 10;
+            transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
             display: flex; justify-content: center; align-items: center;
-            z-index: 10;
         }
         
-        .door-panel::after {
-            content: ''; position: absolute; width: 20px; height: 100%;
-            background: linear-gradient(90deg, rgba(0,0,0,0.8), transparent);
-        }
-        .door-panel.left { border-right: 4px solid #111; transform-origin: left; }
-        .door-panel.left::after { right: 0; }
-        .door-panel.right { border-left: 4px solid #111; transform-origin: right; }
-        .door-panel.right::after { left: 0; background: linear-gradient(-90deg, rgba(0,0,0,0.8), transparent); }
+        .door-panel.left { left: 0; border-right: 4px solid #111; transform-origin: left; }
+        .door-panel.right { right: 0; border-left: 4px solid #111; transform-origin: right; }
 
+        /* When .open is added, slide doors out of view */
         .door-frame.open .door-panel.left { transform: translateX(-100%); }
         .door-frame.open .door-panel.right { transform: translateX(100%); }
 
-        /* Content inside the door */
-        .room-content {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            padding: 40px; box-sizing: border-box; text-align: center;
-            background: radial-gradient(circle, #1a252f, #0f1418);
-            z-index: 5; opacity: 0; transition: opacity 0.5s 1s;
-            display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-        }
-        .door-frame.open .room-content { opacity: 1; }
-
-        h1 { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); font-size: 2.2rem; margin-top: 0; }
+        /* Typography */
+        h1 { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 243, 255, 0.4); font-size: 1.8rem; margin: 0 0 10px 0; }
         .mission-brief {
-            background: rgba(0,0,0,0.6); border-left: 4px solid var(--neon-blue);
-            padding: 15px; margin-bottom: 25px; font-size: 1.2rem; text-align: right; width: 100%;
+            background: rgba(0,0,0,0.7); border-right: 4px solid var(--neon-blue);
+            padding: 10px 15px; margin-bottom: 20px; font-size: 1.1rem; text-align: right; width: 100%; max-width: 600px;
+            border-radius: 5px;
         }
 
         /* --- Lock Components --- */
         
+        /* Keypad */
         .keypad {
             background: #111; border: 3px solid #333; border-radius: 10px;
-            padding: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-            box-shadow: inset 0 0 20px #000, 0 10px 20px rgba(0,0,0,0.8); width: 280px;
+            padding: 15px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px;
+            box-shadow: inset 0 0 20px #000, 0 5px 15px rgba(0,0,0,0.8); width: 100%; max-width: 280px;
+            direction: ltr; /* numbers look better LTR */
         }
         .key-btn {
             background: linear-gradient(to bottom, #444, #222); color: white;
             border: 1px solid #111; border-radius: 5px; height: 50px; font-size: 1.5rem;
             font-family: 'Share Tech Mono', sans-serif; cursor: pointer;
             box-shadow: inset 0 2px 2px rgba(255,255,255,0.2), 0 4px 5px rgba(0,0,0,0.5);
-            transition: 0.1s;
         }
-        .key-btn:active { transform: translateY(4px); box-shadow: inset 0 2px 5px rgba(0,0,0,0.8); }
+        .key-btn:active { transform: translateY(3px); box-shadow: inset 0 1px 2px rgba(0,0,0,0.8); }
         .key-screen {
             grid-column: 1 / 4; background: #0a1914; color: var(--neon-green);
             height: 50px; display: flex; align-items: center; justify-content: center;
@@ -110,53 +107,56 @@
             border: 2px solid #000; box-shadow: inset 0 0 10px #000; border-radius: 5px; margin-bottom: 10px;
         }
 
+        /* Switches / Circuit Board */
         .circuit-board {
-            background: #2a2a2a; border: 4px solid #111; padding: 20px; border-radius: 10px;
-            display: flex; justify-content: center; gap: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            background: #2a2a2a; border: 3px solid #111; padding: 15px; border-radius: 10px;
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+            max-width: 100%;
         }
-        .switch-container { display: flex; flex-direction: column; align-items: center; width: 100px; }
-        .switch-label { font-size: 1rem; text-align: center; margin-bottom: 10px; height: 40px; }
+        .switch-container { display: flex; flex-direction: column; align-items: center; width: 90px; }
+        .switch-label { font-size: 0.95rem; text-align: center; margin-bottom: 10px; height: 45px; line-height: 1.1; display: flex; align-items: center; }
         .switch {
             width: 40px; height: 80px; background: #111; border-radius: 5px;
             position: relative; cursor: pointer; border: 2px solid #000; box-shadow: inset 0 0 10px #000;
         }
         .switch-knob {
             width: 36px; height: 36px; background: linear-gradient(to bottom, #d32f2f, #9a0007);
-            border-radius: 3px; position: absolute; top: 2px; left: 0; transition: 0.3s;
+            border-radius: 3px; position: absolute; top: 2px; left: 0; transition: 0.2s;
             box-shadow: 0 4px 5px rgba(0,0,0,0.5), inset 0 2px 2px rgba(255,255,255,0.3);
         }
         .switch.on .switch-knob { top: 38px; background: linear-gradient(to bottom, #388e3c, #005005); }
 
         .master-btn {
             background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-            color: var(--neon-blue); border: 2px solid var(--neon-blue); padding: 15px 40px;
-            font-size: 1.5rem; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 30px;
-            text-transform: uppercase; letter-spacing: 2px; transition: 0.3s;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2), inset 0 0 10px rgba(0, 243, 255, 0.1);
+            color: var(--neon-blue); border: 2px solid var(--neon-blue); padding: 12px 30px;
+            font-size: 1.3rem; font-weight: bold; border-radius: 5px; cursor: pointer; margin-top: 20px;
+            text-transform: uppercase; transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.2);
         }
-        .master-btn:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 30px var(--neon-blue); }
+        .master-btn:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 25px var(--neon-blue); }
 
-        .status { margin-top: 15px; font-weight: bold; font-family: 'Share Tech Mono', monospace; font-size: 1.2rem; min-height: 25px; }
-        .status.error { color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
-        .status.success { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
+        .status { margin-top: 15px; font-weight: bold; font-family: 'Share Tech Mono', monospace; font-size: 1.1rem; min-height: 25px; }
+        .status.error { color: var(--neon-red); text-shadow: 0 0 8px var(--neon-red); }
+        .status.success { color: var(--neon-green); text-shadow: 0 0 8px var(--neon-green); }
 
+        /* Animation Error Shake */
         .shake { animation: shake 0.4s; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-15px); } 40%, 80% { transform: translateX(15px); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
 
-        /* Lock display on doors */
+        /* The Big Power Button on closed doors */
         .door-lock-circle {
-            position: absolute; width: 140px; height: 140px; background: #111;
-            border-radius: 50%; border: 5px solid #444; z-index: 20;
+            position: absolute; width: 120px; height: 120px; background: #111;
+            border-radius: 50%; border: 4px solid #444; z-index: 20;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 30px #000, inset 0 0 20px #000; transition: opacity 0.5s; cursor: pointer;
+            box-shadow: 0 0 30px #000, inset 0 0 20px #000; transition: opacity 0.3s; cursor: pointer;
         }
         .door-lock-circle:hover .inner { box-shadow: 0 0 30px var(--neon-red); transform: scale(1.05); }
         .door-lock-circle .inner { 
-            width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--neon-red); 
+            width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--neon-red); 
             box-shadow: 0 0 20px var(--neon-red); transition: 0.3s;
             display: flex; justify-content: center; align-items: center;
-            color: var(--neon-red); font-weight: bold; font-size: 1.6rem; text-shadow: 0 0 10px var(--neon-red);
+            color: var(--neon-red); font-weight: bold; font-size: 1.8rem; text-shadow: 0 0 10px var(--neon-red);
         }
         .door-frame.open .door-lock-circle { opacity: 0; pointer-events: none; }
     </style>
@@ -164,12 +164,20 @@
 <body>
 
     <div class="hud">
-        <div id="mission-text">מערכת נעולה - רמת אבטחה 1/11</div>
+        <div id="mission-text">מערכת מוכנה להפעלה</div>
         <div id="timer">00:00:00</div>
     </div>
 
     <div class="vault-container">
         <div class="door-frame" id="main-door">
+            
+            <div class="room-content" id="room-content">
+                <h1 id="stage-title">...</h1>
+                <div class="mission-brief" id="stage-brief">...</div>
+                <div id="interface-container"></div>
+                <div class="status" id="status-msg"></div>
+            </div>
+
             <div class="door-panel left"></div>
             <div class="door-panel right"></div>
             
@@ -177,109 +185,87 @@
                 <div class="inner" id="door-inner">הפעל</div>
             </div>
 
-            <div class="room-content" id="room-content">
-                
-                <h1 id="stage-title">אתחול מערכת</h1>
-                <div class="mission-brief" id="stage-brief">
-                    ברוכים הבאים לכספת בית הדין התת-קרקעית.<br>כדי לפתוח את 11 דלתות הפלדה תצטרכו להפגין שליטה מוחלטת ב-11 המשניות של פרק "אלו מציאות".<br><br>לחצו על הכפתור כדי להתחיל את האתגר. השעון יתחיל לרוץ.
-                </div>
-
-                <div id="interface-container">
-                    <button class="master-btn" onclick="startGame()">התחל פריצה</button>
-                </div>
-
-                <div class="status" id="status-msg"></div>
-
-            </div>
         </div>
     </div>
 
     <script>
-        // Open the initial vault doors
-        function bootSystem() {
-            document.getElementById('main-door').classList.add('open');
-        }
-
-        // --- System Data ---
         let currentStage = 0;
         let timerInterval;
         let timeSeconds = 0;
 
-        // Stage configurations (The 11 Mishnayot)
+        // Stage Configurations (The 11 Mishnayot)
         const stages = [
-            null, // 0 is intro
+            null, // 0 
             {
                 title: "מנעול 1: זיהוי סימנים (משנה א')",
-                brief: "מערכת המיון קרסה. כדי לאשר את פתיחת הדלת, עליכם להקליד את הקוד למקרים הבאים:<br>1. פירות מפוזרים<br>2. ככרות של נחתום<br>3. מעות מפוזרות<br>הקלידו '0' אם המוצא שומר לעצמו (הרי אלו שלו), ו-'1' אם חייב להכריז.",
+                brief: "מערכת המיון קרסה. הקלד את הקוד ל-3 מקרים:<br>1. פירות מפוזרים<br>2. ככרות של נחתום<br>3. מעות מפוזרות<br>הקש '0' אם המוצא שומר לעצמו (אין סימן), או '1' אם חייב להכריז.",
                 type: "keypad",
                 answer: "000"
             },
             {
                 title: "מנעול 2: תצורת מטבעות (משנה ב')",
-                brief: "זיהוי צורת הנחה נחשב כסימן במטבעות. קודן הכספת דורש את המספר המדויק:<br>כמה מטבעות מינימום צריכים להיות מסודרים כ'מגדל' (זה על גב זה) כדי שיתחייב להכריז עליהם?",
+                brief: "זיהוי צורת הנחה. כמה מטבעות מינימום צריכים להיות מסודרים כ'מגדל' (זה על גב זה) כדי שייחשב כסימן ויתחייב להכריז עליהם?",
                 type: "keypad",
                 answer: "3"
             },
             {
                 title: "מנעול 3: בקרת נטישה (משנה ג')",
-                brief: "אדם מצא כלי. לפניכם 3 מתגים המייצגים מיקומים. כוונו את המתג למצב 'מופעל' (למטה/ירוק) רק אם ההלכה פוסקת ש<b>אסור לגעת בחפץ</b> כיוון שהונח שם בכוונה.",
+                brief: "אדם מצא כלי. כוון את המתג למטה (ירוק) <b>רק</b> אם ההלכה פוסקת ש<b>אסור לגעת בו</b> כיוון שהונח בכוונה במקום המשתמר.",
                 type: "switches",
                 labels: ["גל אבנים קבוע", "אשפה ישנה שאינה מפונה", "אשפה חדשה שמפנים מיד"],
                 answer: [true, true, false] 
             },
             {
                 title: "מנעול 4: פרוטוקול מסחר (משנה ד')",
-                brief: "כסף נמצא בחנות. יש לנתב את הכסף לבעליו החוקיים. כוונו למעלה (אדום) אם הכסף שייך למוצא, ולמטה (ירוק) אם הכסף שייך לחנווני (בעל החנות).",
+                brief: "כסף נמצא בחנות. יש לנתב את הכסף. כוון למעלה (אדום) אם הכסף של המוצא, ולמטה (ירוק) אם הכסף של בעל החנות (החנווני).",
                 type: "switches",
-                labels: ["לפני התיבה (דלפק)", "על התיבה", "בתוך התיבה עצמה"],
+                labels: ["לפני התיבה (דלפק)", "על התיבה", "בתוך התיבה"],
                 answer: [false, true, true] 
             },
             {
-                title: "מנעול 5: המילה השמורה (משנה ה')",
-                brief: "הקוד לדלת זו הוא המילה הספציפית שהתורה השתמשה בה כדוגמה לכלל: 'כל דבר שיש בו סימנים ויש לו תובעים חייב להכריז'.<br>הקלידו את המילה.",
+                title: "מנעול 5: מילת הגישה (משנה ה')",
+                brief: "הקוד לדלת זו הוא החפץ שהתורה השתמשה בו כדוגמה לכלל: 'כל דבר שיש בו סימנים ויש לו תובעים חייב להכריז'. הקלד את המילה.",
                 type: "hebrew-keypad",
                 answer: "שמלה"
             },
             {
                 title: "מנעול 6: תזמון קריאה (משנה ו')",
-                brief: "מערכת הכריזה דורשת הגדרת זמן. כמה 'רגלים' (חגים) היה חייב אדם להכריז בירושלים בתקופת המקדש כדי להודיע על אבדה?",
+                brief: "מערכת הכריזה דורשת הגדרת זמן. כמה 'רגלים' (חגים) היה חייב אדם להכריז בירושלים כדי להודיע על אבדה?",
                 type: "keypad",
                 answer: "3"
             },
             {
                 title: "מנעול 7: ניהול משאבים (משנה ז')",
-                brief: "יש לכם בהמה שאבדה ו'אינה עושה ואוכלת' (רק מוציאה כסף על מזון ולא מכניסה רווח). מתי לדעת תנא קמא יש למכור אותה?<br>1. מיד<br>2. לאחר זמן קצר<br>3. אף פעם<br>הקלידו את מספר התשובה הנכונה.",
+                brief: "בהמה שאבדה ו'אינה עושה ואוכלת' (רק עולה כסף). מתי יש למכור אותה כדי לשמור את הכסף לבעלים?<br>1. מיד<br>2. לאחר זמן קצר<br>3. אף פעם<br>הקלד את מספר התשובה.",
                 type: "keypad",
                 answer: "2"
             },
             {
                 title: "מנעול 8: פרוטוקול שימוש (משנה ח')",
-                brief: "הפעילו (מתג ירוק למטה) רק את הפעולות ש<b>מותר</b> למוצא לעשות עם האבדה שנמצאת אצלו לפי ההלכה.",
+                brief: "הפעל מתג (למטה/ירוק) רק על פעולות ש<b>מותר</b> למוצא לעשות עם האבדה שנמצאת אצלו.",
                 type: "switches",
-                labels: ["ללבוש בגד באופן קבוע", "לאוורר בגד כדי שלא יירקב", "לקרוא בספר לצרכי לימוד", "לגלול ספר רק כדי שלא ייהרס"],
+                labels: ["ללבוש בגד ברחוב באופן קבוע", "לאוורר בגד כדי שלא יירקב", "לקרוא בספר ללמידה עצמית", "לגלול ספר כדי לשמור עליו"],
                 answer: [false, true, false, true] 
             },
             {
-                title: "מנעול 9: רדאר אבדות (משנה ט')",
-                brief: "פרה רצה בין הכרמים. הדין הוא 'השב תשיבם' אפילו כמה פעמים. הקלידו את המספר המקסימלי של הפעמים שהמשנה מציינת שחובה לחזור ולהחזיר.",
+                title: "מנעול 9: רדאר השבת אבדות (משנה ט')",
+                brief: "פרה רצה בין הכרמים. 'השב תשיבם'. הקלד את המספר המקסימלי של הפעמים שהמשנה מציינת שחובה להחזיר.",
                 type: "keypad",
                 answer: "5"
             },
             {
-                title: "מנעול 10: קונפליקט פיקוד (משנה י')",
-                brief: "יוסי הכהן מצא אבדה בבית קברות. אביו פוקד עליו: 'היטמא והבא אותה!'.<br>1. שמע לאביו (כיבוד הורים).<br>2. אל תשמע לו (כי אסור לכהן להיטמא, ושניהם חייבים במצוות ה').<br>הקלידו את מספר ההחלטה.",
+                title: "מנעול 10: קונפליקט פקודות (משנה י')",
+                brief: "יוסי הכהן מצא אבדה בבית קברות. אביו אומר: 'היטמא והבא אותה!'.<br>1. ישמע לאביו (כיבוד הורים).<br>2. לא ישמע לו (כי אסור לכהן להיטמא).",
                 type: "keypad",
                 answer: "2"
             },
             {
                 title: "מנעול 11: קודש הקודשים (משנה י\"א)",
-                brief: "הגעתם לכספת האחרונה! יש לכם אבדה של אביכם ואבדה של רבכם (המלמד אתכם תורה). אתם יכולים להציל רק אחת. מי קודם ולמי יש להשיב?<br>1 = אבא<br>2 = הרב המובהק<br>3 = מי שיש לו אבדה יקרה יותר.",
+                brief: "כספת אחרונה! יש אבדה של אביכם ואבדה של רבכם (המלמד תורה). ניתן להציל רק אחת. את מי קודם למי יש להשיב?<br>1 = אבא<br>2 = הרב המובהק",
                 type: "keypad",
                 answer: "2"
             }
         ];
-
-        // --- Core Engine ---
 
         function updateTimer() {
             timeSeconds++;
@@ -289,26 +275,19 @@
             document.getElementById('timer').innerText = `${h}:${m}:${s}`;
         }
 
-        function startGame() {
+        // When the user clicks the big Red "Power" button initially
+        function bootSystem() {
+            // Hide the power button forever
+            document.getElementById('door-indicator').style.display = 'none';
+            
+            // Start the clock
             timerInterval = setInterval(updateTimer, 1000);
-            loadStage(1);
-        }
-
-        function loadStage(n) {
-            currentStage = n;
-            document.getElementById('mission-text').innerText = `מערכת נעולה - רמת אבטחה ${n}/11`;
             
-            // Animation: Close door, change content, open door
-            const door = document.getElementById('main-door');
-            door.classList.remove('open');
-            document.getElementById('door-inner').style.borderColor = "var(--neon-red)";
-            document.getElementById('door-inner').style.boxShadow = "0 0 20px var(--neon-red)";
-            document.getElementById('door-inner').innerText = "LOCKED";
-            
-            setTimeout(() => {
-                buildInterface(stages[n]);
-                door.classList.add('open');
-            }, 1500); 
+            // Setup stage 1 directly and open doors
+            currentStage = 1;
+            document.getElementById('mission-text').innerText = `מערכת נעולה - רמת אבטחה ${currentStage}/11`;
+            buildInterface(stages[currentStage]);
+            document.getElementById('main-door').classList.add('open');
         }
 
         let currentInput = ""; 
@@ -339,7 +318,6 @@
                     html += `<button class="key-btn" onclick="pressKey('C')" style="color:#ff003c;">CLR</button>
                              <button class="key-btn" onclick="submitKeypad()" style="color:#39ff14; grid-column: span 2;">ENTER</button>`;
                 }
-                
                 html += `</div>`;
                 container.innerHTML = html;
             } 
@@ -354,12 +332,10 @@
                         </div>
                     </div>`;
                 });
-                html += `</div><button class="master-btn" onclick="submitSwitches()">בצע סנכרון</button>`;
+                html += `</div><button class="master-btn" onclick="submitSwitches()">בצע סנכרון ופתח</button>`;
                 container.innerHTML = html;
             }
         }
-
-        // --- Interaction Logic ---
 
         function pressKey(char) {
             const screen = document.getElementById('k-screen');
@@ -377,7 +353,6 @@
             void panel.offsetWidth; // reset animation
             panel.classList.add('shake');
             
-            document.getElementById('door-inner').style.borderColor = "var(--neon-red)";
             currentInput = ""; 
             const screen = document.getElementById('k-screen');
             if(screen) screen.innerText = "_";
@@ -385,19 +360,26 @@
 
         function triggerSuccess() {
             const status = document.getElementById('status-msg');
-            status.innerText = "אימות הושלם בהצלחה. פותח מנעול...";
+            status.innerText = "אימות הצליח! מעדכן מנעול...";
             status.className = "status success";
-            document.getElementById('door-inner').style.borderColor = "var(--neon-green)";
-            document.getElementById('door-inner').style.boxShadow = "0 0 20px var(--neon-green)";
-            document.getElementById('door-inner').innerText = "OPEN";
             
+            // 1. Close doors after a short delay
             setTimeout(() => {
-                if (currentStage < 11) {
-                    loadStage(currentStage + 1);
-                } else {
-                    victory();
-                }
-            }, 1000);
+                document.getElementById('main-door').classList.remove('open');
+                
+                // 2. Wait for doors to fully close (1.2s), then setup next stage and reopen
+                setTimeout(() => {
+                    currentStage++;
+                    if (currentStage <= 11) {
+                        document.getElementById('mission-text').innerText = `מערכת נעולה - רמת אבטחה ${currentStage}/11`;
+                        buildInterface(stages[currentStage]);
+                        document.getElementById('main-door').classList.add('open');
+                    } else {
+                        victory();
+                        document.getElementById('main-door').classList.add('open');
+                    }
+                }, 1300);
+            }, 800);
         }
 
         function submitKeypad() {
@@ -423,33 +405,24 @@
             }
         }
 
-        // --- Victory ---
         function victory() {
             clearInterval(timerInterval);
-            const door = document.getElementById('main-door');
-            door.classList.remove('open');
-            document.getElementById('door-inner').innerText = "WIN";
-            
-            setTimeout(() => {
-                const code = "VAULT-" + Math.floor(Math.random() * 9000 + 1000);
-                document.getElementById('stage-title').innerText = "קודש הקודשים נפרץ!";
-                document.getElementById('stage-brief').innerHTML = `
-                    <div style="text-align:center; color:var(--neon-green); font-size:1.5rem; text-shadow:0 0 10px var(--neon-green);">
-                        משימה הושלמה בהצלחה!<br>הפגנתם ידע מושלם בכל 11 המשניות.
-                    </div>
-                    <br>
-                    <div style="background:#111; padding:15px; border:2px solid var(--neon-blue); border-radius:5px; text-align:center;">
-                        זמן ביצוע: <span style="color:white;">${document.getElementById('timer').innerText}</span><br>
-                        קוד אימות מיוחד: <span style="color:var(--neon-blue); font-family:'Share Tech Mono', sans-serif; font-size:1.5rem;">${code}</span>
-                    </div>
-                    <br>צלמו מסך זה והעבירו למורה כדי לקבל את הפרס המובטח!
-                `;
-                document.getElementById('interface-container').innerHTML = "";
-                document.getElementById('status-msg').innerText = "";
-                door.classList.add('open');
-            }, 1500);
+            const code = "VAULT-" + Math.floor(Math.random() * 9000 + 1000);
+            document.getElementById('stage-title').innerText = "קודש הקודשים נפרץ!";
+            document.getElementById('stage-brief').innerHTML = `
+                <div style="text-align:center; color:var(--neon-green); font-size:1.4rem; text-shadow:0 0 10px var(--neon-green);">
+                    משימה הושלמה בהצלחה!<br>הפגנתם ידע מושלם בכל 11 המשניות של אלו מציאות.
+                </div>
+                <br>
+                <div style="background:#111; padding:15px; border:2px solid var(--neon-blue); border-radius:5px; text-align:center;">
+                    זמן ביצוע: <span style="color:white;">${document.getElementById('timer').innerText}</span><br>
+                    קוד אימות מיוחד: <span style="color:var(--neon-blue); font-family:'Share Tech Mono', sans-serif; font-size:1.5rem;">${code}</span>
+                </div>
+                <br><div style="text-align:center;">📸 צלמו מסך זה והעבירו למורה כדי לקבל את הפרס!</div>
+            `;
+            document.getElementById('interface-container').innerHTML = "";
+            document.getElementById('status-msg').innerText = "";
         }
-
     </script>
 </body>
 </html>
