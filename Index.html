@@ -9,7 +9,6 @@
         :root {
             --bg-dark: #0a0a0c;
             --metal-base: #2c3e50;
-            --metal-light: #4ca1af;
             --neon-blue: #00f3ff;
             --neon-red: #ff003c;
             --neon-green: #39ff14;
@@ -83,24 +82,23 @@
         }
         .door-frame.open .room-content { opacity: 1; }
 
-        h1 { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); font-size: 2rem; margin-top: 0; }
+        h1 { color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 243, 255, 0.5); font-size: 2.2rem; margin-top: 0; }
         .mission-brief {
             background: rgba(0,0,0,0.6); border-left: 4px solid var(--neon-blue);
             padding: 15px; margin-bottom: 25px; font-size: 1.2rem; text-align: right; width: 100%;
         }
 
-        /* --- Realistic Lock Components --- */
+        /* --- Lock Components --- */
         
-        /* 1. Digital Keypad */
         .keypad {
             background: #111; border: 3px solid #333; border-radius: 10px;
             padding: 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-            box-shadow: inset 0 0 20px #000, 0 10px 20px rgba(0,0,0,0.8); width: 250px;
+            box-shadow: inset 0 0 20px #000, 0 10px 20px rgba(0,0,0,0.8); width: 280px;
         }
         .key-btn {
             background: linear-gradient(to bottom, #444, #222); color: white;
             border: 1px solid #111; border-radius: 5px; height: 50px; font-size: 1.5rem;
-            font-family: 'Share Tech Mono'; cursor: pointer;
+            font-family: 'Share Tech Mono', sans-serif; cursor: pointer;
             box-shadow: inset 0 2px 2px rgba(255,255,255,0.2), 0 4px 5px rgba(0,0,0,0.5);
             transition: 0.1s;
         }
@@ -108,17 +106,16 @@
         .key-screen {
             grid-column: 1 / 4; background: #0a1914; color: var(--neon-green);
             height: 50px; display: flex; align-items: center; justify-content: center;
-            font-size: 2rem; font-family: 'Share Tech Mono'; letter-spacing: 5px;
+            font-size: 2rem; font-family: 'Share Tech Mono', monospace; letter-spacing: 5px;
             border: 2px solid #000; box-shadow: inset 0 0 10px #000; border-radius: 5px; margin-bottom: 10px;
         }
 
-        /* 2. Circuit Breaker (Switches) */
         .circuit-board {
             background: #2a2a2a; border: 4px solid #111; padding: 20px; border-radius: 10px;
             display: flex; justify-content: center; gap: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
-        .switch-container { display: flex; flex-direction: column; align-items: center; width: 80px; }
-        .switch-label { font-size: 0.9rem; text-align: center; margin-bottom: 10px; height: 40px; }
+        .switch-container { display: flex; flex-direction: column; align-items: center; width: 100px; }
+        .switch-label { font-size: 1rem; text-align: center; margin-bottom: 10px; height: 40px; }
         .switch {
             width: 40px; height: 80px; background: #111; border-radius: 5px;
             position: relative; cursor: pointer; border: 2px solid #000; box-shadow: inset 0 0 10px #000;
@@ -130,19 +127,6 @@
         }
         .switch.on .switch-knob { top: 38px; background: linear-gradient(to bottom, #388e3c, #005005); }
 
-        /* 3. Wires / Cyber Drag */
-        .wires-panel { display: flex; gap: 40px; align-items: center; margin-top: 20px; }
-        .wire-port {
-            width: 60px; height: 60px; background: #111; border-radius: 50%; border: 3px solid #333;
-            display: flex; justify-content: center; align-items: center; font-size: 0.8rem; text-align: center;
-        }
-        .wire {
-            width: 150px; height: 15px; background: repeating-linear-gradient(45deg, #e74c3c, #e74c3c 10px, #c0392b 10px, #c0392b 20px);
-            border-radius: 10px; cursor: pointer; box-shadow: 0 5px 10px rgba(0,0,0,0.5); transition: 0.2s;
-        }
-        .wire:hover { filter: brightness(1.2); }
-
-        /* Master Button */
         .master-btn {
             background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
             color: var(--neon-blue); border: 2px solid var(--neon-blue); padding: 15px 40px;
@@ -152,27 +136,28 @@
         }
         .master-btn:hover { background: var(--neon-blue); color: #000; box-shadow: 0 0 30px var(--neon-blue); }
 
-        /* Status Text */
-        .status { margin-top: 15px; font-weight: bold; font-family: 'Share Tech Mono'; font-size: 1.2rem; min-height: 25px; }
+        .status { margin-top: 15px; font-weight: bold; font-family: 'Share Tech Mono', monospace; font-size: 1.2rem; min-height: 25px; }
         .status.error { color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
         .status.success { color: var(--neon-green); text-shadow: 0 0 10px var(--neon-green); }
 
-        /* Shake Animation */
         .shake { animation: shake 0.4s; }
         @keyframes shake { 0%, 100% { transform: translateX(0); } 20%, 60% { transform: translateX(-15px); } 40%, 80% { transform: translateX(15px); } }
 
-        /* Hidden class for stage management */
-        .d-none { display: none !important; }
-
         /* Lock display on doors */
         .door-lock-circle {
-            position: absolute; width: 120px; height: 120px; background: #111;
+            position: absolute; width: 140px; height: 140px; background: #111;
             border-radius: 50%; border: 5px solid #444; z-index: 20;
             top: 50%; left: 50%; transform: translate(-50%, -50%);
             display: flex; justify-content: center; align-items: center;
-            box-shadow: 0 0 30px #000, inset 0 0 20px #000; transition: opacity 0.5s;
+            box-shadow: 0 0 30px #000, inset 0 0 20px #000; transition: opacity 0.5s; cursor: pointer;
         }
-        .door-lock-circle .inner { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--neon-red); box-shadow: 0 0 20px var(--neon-red); transition: 0.5s; }
+        .door-lock-circle:hover .inner { box-shadow: 0 0 30px var(--neon-red); transform: scale(1.05); }
+        .door-lock-circle .inner { 
+            width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--neon-red); 
+            box-shadow: 0 0 20px var(--neon-red); transition: 0.3s;
+            display: flex; justify-content: center; align-items: center;
+            color: var(--neon-red); font-weight: bold; font-size: 1.6rem; text-shadow: 0 0 10px var(--neon-red);
+        }
         .door-frame.open .door-lock-circle { opacity: 0; pointer-events: none; }
     </style>
 </head>
@@ -188,8 +173,8 @@
             <div class="door-panel left"></div>
             <div class="door-panel right"></div>
             
-            <div class="door-lock-circle" id="door-indicator">
-                <div class="inner" id="door-inner"></div>
+            <div class="door-lock-circle" id="door-indicator" onclick="bootSystem()">
+                <div class="inner" id="door-inner">הפעל</div>
             </div>
 
             <div class="room-content" id="room-content">
@@ -210,6 +195,11 @@
     </div>
 
     <script>
+        // Open the initial vault doors
+        function bootSystem() {
+            document.getElementById('main-door').classList.add('open');
+        }
+
         // --- System Data ---
         let currentStage = 0;
         let timerInterval;
@@ -222,7 +212,7 @@
                 title: "מנעול 1: זיהוי סימנים (משנה א')",
                 brief: "מערכת המיון קרסה. כדי לאשר את פתיחת הדלת, עליכם להקליד את הקוד למקרים הבאים:<br>1. פירות מפוזרים<br>2. ככרות של נחתום<br>3. מעות מפוזרות<br>הקלידו '0' אם המוצא שומר לעצמו (הרי אלו שלו), ו-'1' אם חייב להכריז.",
                 type: "keypad",
-                answer: "000" // All 3 have no siman
+                answer: "000"
             },
             {
                 title: "מנעול 2: תצורת מטבעות (משנה ב')",
@@ -232,21 +222,21 @@
             },
             {
                 title: "מנעול 3: בקרת נטישה (משנה ג')",
-                brief: "אדם מצא כלי. לפניכם 3 מתגים המייצגים מיקומים. כוונו את המתג למצב 'מופעל' (למטה/ירוק) רק אם ההלכה פוסקת שאסור לגעת בחפץ כיוון שהונח בכוונה.",
+                brief: "אדם מצא כלי. לפניכם 3 מתגים המייצגים מיקומים. כוונו את המתג למצב 'מופעל' (למטה/ירוק) רק אם ההלכה פוסקת ש<b>אסור לגעת בחפץ</b> כיוון שהונח שם בכוונה.",
                 type: "switches",
-                labels: ["גל דינרים קבוע", "אשפה ישנה", "אשפה חדשה מפוזרת"],
-                answer: [true, true, false] // First two are "don't touch", last is "take & announce/keep"
+                labels: ["גל אבנים קבוע", "אשפה ישנה שאינה מפונה", "אשפה חדשה שמפנים מיד"],
+                answer: [true, true, false] 
             },
             {
                 title: "מנעול 4: פרוטוקול מסחר (משנה ד')",
-                brief: "כסף נמצא בחנות. יש לנתב את הכסף לבעליו החוקיים. כוונו למעלה (אדום) אם הכסף שייך למוצא, ולמטה (ירוק) אם הכסף שייך לחנווני.",
+                brief: "כסף נמצא בחנות. יש לנתב את הכסף לבעליו החוקיים. כוונו למעלה (אדום) אם הכסף שייך למוצא, ולמטה (ירוק) אם הכסף שייך לחנווני (בעל החנות).",
                 type: "switches",
                 labels: ["לפני התיבה (דלפק)", "על התיבה", "בתוך התיבה עצמה"],
-                answer: [false, true, true] // false = up/red (Finder), true = down/green (Shopkeeper)
+                answer: [false, true, true] 
             },
             {
                 title: "מנעול 5: המילה השמורה (משנה ה')",
-                brief: "הקוד לדלת זו הוא המילה הספציפית שהתורה השתמשה בה כדוגמה לכלל: 'כל דבר שיש בו סימנים ויש לו תובעים חייב להכריז'.<br>הקלידו את המילה (רמז: 4 אותיות, ש-מ-ל-ה).",
+                brief: "הקוד לדלת זו הוא המילה הספציפית שהתורה השתמשה בה כדוגמה לכלל: 'כל דבר שיש בו סימנים ויש לו תובעים חייב להכריז'.<br>הקלידו את המילה.",
                 type: "hebrew-keypad",
                 answer: "שמלה"
             },
@@ -258,32 +248,32 @@
             },
             {
                 title: "מנעול 7: ניהול משאבים (משנה ז')",
-                brief: "יש לכם בהמה שאבדה ו'אינה עושה ואוכלת' (רק מוציאה כסף ולא מכניסה). מתי לדעת תנא קמא יש למכור אותה?<br>1. מיד<br>2. לאחר זמן קצר (3-30 יום)<br>3. אף פעם<br>הקלידו את מספר התשובה הנכונה.",
+                brief: "יש לכם בהמה שאבדה ו'אינה עושה ואוכלת' (רק מוציאה כסף על מזון ולא מכניסה רווח). מתי לדעת תנא קמא יש למכור אותה?<br>1. מיד<br>2. לאחר זמן קצר<br>3. אף פעם<br>הקלידו את מספר התשובה הנכונה.",
                 type: "keypad",
                 answer: "2"
             },
             {
                 title: "מנעול 8: פרוטוקול שימוש (משנה ח')",
-                brief: "הפעילו (מתג ירוק) רק את הפעולות ש**מותר** למוצא לעשות עם האבדה שנמצאת אצלו.",
+                brief: "הפעילו (מתג ירוק למטה) רק את הפעולות ש<b>מותר</b> למוצא לעשות עם האבדה שנמצאת אצלו לפי ההלכה.",
                 type: "switches",
-                labels: ["ללבוש בגד באופן קבוע", "לאוורר בגד לצורכו", "לקרוא בספר לצרכי לימוד", "לגלול ספר כדי שלא יירקב"],
+                labels: ["ללבוש בגד באופן קבוע", "לאוורר בגד כדי שלא יירקב", "לקרוא בספר לצרכי לימוד", "לגלול ספר רק כדי שלא ייהרס"],
                 answer: [false, true, false, true] 
             },
             {
                 title: "מנעול 9: רדאר אבדות (משנה ט')",
-                brief: "פרה רצה בין הכרמים. הדין הוא 'השב תשיבם' אפילו כמה פעמים. הקלידו את המספר המקסימלי של הפעמים שהמשנה מציינת שחובה להחזיר.",
+                brief: "פרה רצה בין הכרמים. הדין הוא 'השב תשיבם' אפילו כמה פעמים. הקלידו את המספר המקסימלי של הפעמים שהמשנה מציינת שחובה לחזור ולהחזיר.",
                 type: "keypad",
-                answer: "5" // "אפילו ארבעה וחמישה פעמים"
+                answer: "5"
             },
             {
                 title: "מנעול 10: קונפליקט פיקוד (משנה י')",
-                brief: "יוסי הכהן מצא אבדה בבית קברות. אביו פוקד עליו: 'היטמא והבא אותה!'.<br>1. שמע לאביו (כיבוד הורים).<br>2. אל תשמע לו (שניהם חייבים במצוות ה').<br>הקלידו את מספר ההחלטה.",
+                brief: "יוסי הכהן מצא אבדה בבית קברות. אביו פוקד עליו: 'היטמא והבא אותה!'.<br>1. שמע לאביו (כיבוד הורים).<br>2. אל תשמע לו (כי אסור לכהן להיטמא, ושניהם חייבים במצוות ה').<br>הקלידו את מספר ההחלטה.",
                 type: "keypad",
                 answer: "2"
             },
             {
                 title: "מנעול 11: קודש הקודשים (משנה י\"א)",
-                brief: "הגעתם לכספת האחרונה! יש לכם אבדה של אביכם ואבדה של רבכם. אתם יכולים להציל רק אחת. קוד הדלת הוא מספר המייצג את מי שיש להציל קודם:<br>1 = אבא<br>2 = הרב המובהק<br>3 = מי שיש לו אבדה יקרה יותר.",
+                brief: "הגעתם לכספת האחרונה! יש לכם אבדה של אביכם ואבדה של רבכם (המלמד אתכם תורה). אתם יכולים להציל רק אחת. מי קודם ולמי יש להשיב?<br>1 = אבא<br>2 = הרב המובהק<br>3 = מי שיש לו אבדה יקרה יותר.",
                 type: "keypad",
                 answer: "2"
             }
@@ -313,14 +303,15 @@
             door.classList.remove('open');
             document.getElementById('door-inner').style.borderColor = "var(--neon-red)";
             document.getElementById('door-inner').style.boxShadow = "0 0 20px var(--neon-red)";
+            document.getElementById('door-inner').innerText = "LOCKED";
             
             setTimeout(() => {
                 buildInterface(stages[n]);
                 door.classList.add('open');
-            }, 1500); // wait for door to close
+            }, 1500); 
         }
 
-        let currentInput = ""; // for keypads
+        let currentInput = ""; 
 
         function buildInterface(stageData) {
             document.getElementById('stage-title').innerText = stageData.title;
@@ -333,9 +324,7 @@
             currentInput = "";
 
             if (stageData.type === "keypad" || stageData.type === "hebrew-keypad") {
-                // Build a high-tech keypad
-                let html = `<div class="keypad">
-                    <div class="key-screen" id="k-screen">_</div>`;
+                let html = `<div class="keypad"><div class="key-screen" id="k-screen">_</div>`;
                 
                 if (stageData.type === "keypad") {
                     for(let i=1; i<=9; i++) {
@@ -345,7 +334,6 @@
                              <button class="key-btn" onclick="pressKey('0')">0</button>
                              <button class="key-btn" onclick="submitKeypad()" style="color:#39ff14;">ENT</button>`;
                 } else {
-                    // Hebrew minimal keypad for specific words
                     const chars = ['ש','מ','ל','ה','א','ב','ת','ר','נ'];
                     chars.forEach(c => { html += `<button class="key-btn" onclick="pressKey('${c}')">${c}</button>`; });
                     html += `<button class="key-btn" onclick="pressKey('C')" style="color:#ff003c;">CLR</button>
@@ -356,7 +344,6 @@
                 container.innerHTML = html;
             } 
             else if (stageData.type === "switches") {
-                // Build circuit board
                 let html = `<div class="circuit-board">`;
                 stageData.labels.forEach((label, idx) => {
                     html += `
@@ -386,12 +373,11 @@
             status.innerText = msg;
             status.className = "status error";
             const panel = document.getElementById('interface-container');
+            panel.classList.remove('shake');
+            void panel.offsetWidth; // reset animation
             panel.classList.add('shake');
-            setTimeout(() => panel.classList.remove('shake'), 400);
             
-            // Visual feedback on door lock
             document.getElementById('door-inner').style.borderColor = "var(--neon-red)";
-            
             currentInput = ""; 
             const screen = document.getElementById('k-screen');
             if(screen) screen.innerText = "_";
@@ -403,6 +389,7 @@
             status.className = "status success";
             document.getElementById('door-inner').style.borderColor = "var(--neon-green)";
             document.getElementById('door-inner').style.boxShadow = "0 0 20px var(--neon-green)";
+            document.getElementById('door-inner').innerText = "OPEN";
             
             setTimeout(() => {
                 if (currentStage < 11) {
@@ -441,6 +428,7 @@
             clearInterval(timerInterval);
             const door = document.getElementById('main-door');
             door.classList.remove('open');
+            document.getElementById('door-inner').innerText = "WIN";
             
             setTimeout(() => {
                 const code = "VAULT-" + Math.floor(Math.random() * 9000 + 1000);
@@ -452,7 +440,7 @@
                     <br>
                     <div style="background:#111; padding:15px; border:2px solid var(--neon-blue); border-radius:5px; text-align:center;">
                         זמן ביצוע: <span style="color:white;">${document.getElementById('timer').innerText}</span><br>
-                        קוד אימות מיוחד: <span style="color:var(--neon-blue); font-family:'Share Tech Mono'; font-size:1.5rem;">${code}</span>
+                        קוד אימות מיוחד: <span style="color:var(--neon-blue); font-family:'Share Tech Mono', sans-serif; font-size:1.5rem;">${code}</span>
                     </div>
                     <br>צלמו מסך זה והעבירו למורה כדי לקבל את הפרס המובטח!
                 `;
