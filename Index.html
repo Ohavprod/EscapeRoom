@@ -3,30 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>חדר בריחה: פסח - שלב 1</title>
+    <title>האפיקומן האבוד - חדר בריחה</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="room" id="room">
-        <div class="flashlight-overlay" id="flashlight"></div>
-        
-        <div class="clickable-item scroll" id="hidden-scroll" onclick="openModal()">📜 רמז נסתר</div>
-        
-        <div class="door-lock" id="door">
-            🚪 מנעול הדלת
-            <input type="number" id="door-code" placeholder="הכנס קוד פתיחה...">
-            <button onclick="checkCode()">פתח</button>
+    <div id="intro-screen" class="screen active-screen">
+        <div class="intro-box">
+            <h1>האפיקומן האבוד 🔍</h1>
+            <p>ברוכים הבאים לחדר הבריחה של פסח!</p>
+            <p>כדי למצוא את האפיקומן ולצאת לחירות, תצטרכו לעבור בין חדרי הבית, לפתור צפנים, לחפש רמזים ולגלות סודות.</p>
+            <p><strong>שימו לב:</strong> כל החידות במשחק מבוססות על ספר <em>"פניני הלכה - פסח"</em>. חפשו היטב, פקחו עיניים, וזכרו - כל רמז מוביל לדבר הבא.</p>
+            <button onclick="startGame()">התחל משחק</button>
         </div>
     </div>
 
-    <div id="riddle-modal" class="modal">
+    <div id="room-1" class="screen room">
+        <div class="flashlight-overlay" id="flashlight"></div>
+        
+        <div class="clickable-item" id="hidden-scroll" onclick="showRiddle('riddle-1')">📜 קלף עתיק</div>
+        
+        <div class="safe" id="safe-box">
+            <div id="safe-closed">
+                🗄️ כספת נעולה
+                <br>
+                <input type="number" id="safe-code" placeholder="קוד...">
+                <button onclick="trySafeCode()">פתח</button>
+            </div>
+            <div id="safe-opened" class="hidden">
+                <p>הכספת נפתחה!</p>
+                <div class="inventory-item" onclick="goToRoom('room-2')">
+                    🍷 גביע מוכתם בחמץ
+                    <span class="tooltip">"קח אותי למטבח לטבילה במים רותחים..."</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="room-2" class="screen room kitchen-bg">
+        <h2>הגעתם למטבח!</h2>
+        <p>כאן תהיה חידת הגרירה והשחרור של הכלים (נגדיר אותה בשלב הבא).</p>
+    </div>
+
+    <div id="riddle-modal" class="modal hidden">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
-            <h2>חידת בדיקת חמץ</h2>
-            <p>לפי פניני הלכה (פרק ד'): "בתחילת ליל י"ד בניסן בודקים את החמץ..."</p>
-            <p><strong>חידה:</strong> אני מאיר את החושך אך איני פנס, דרכי מחפשים בחורים ובסדקים את מה שאסור שייכנס. מי אני?</p>
-            <p style="font-size: 0.9em; color: #555;">(קוד הדלת הוא הגימטריה של התשובה)</p>
+            <div id="modal-text"></div>
         </div>
     </div>
 
