@@ -1,57 +1,12 @@
-<!DOCTYPE html>
-<html lang="he" dir="rtl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>האפיקומן האבוד - חדר בריחה</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <div id="intro-screen" class="screen active-screen">
-        <div class="intro-box">
-            <h1>האפיקומן האבוד 🔍</h1>
-            <p>ברוכים הבאים לחדר הבריחה של פסח!</p>
-            <p>כדי למצוא את האפיקומן ולצאת לחירות, תצטרכו לעבור בין חדרי הבית, לפתור צפנים, לחפש רמזים ולגלות סודות.</p>
-            <p><strong>שימו לב:</strong> כל החידות במשחק מבוססות על ספר <em>"פניני הלכה - פסח"</em>. חפשו היטב, פקחו עיניים, וזכרו - כל רמז מוביל לדבר הבא.</p>
-            <button onclick="startGame()">התחל משחק</button>
-        </div>
-    </div>
-
-    <div id="room-1" class="screen room">
+<div id="room-1" class="screen room">
         <div class="flashlight-overlay" id="flashlight"></div>
         
-        <div class="clickable-item" id="hidden-scroll" onclick="showRiddle('riddle-1')">📜 קלף עתיק</div>
+        <div class="clickable-item" id="hidden-scroll" onclick="showRiddle('riddle-1')">📜</div>
         
         <div class="safe" id="safe-box">
-            <div id="safe-closed">
-                🗄️ כספת נעולה
-                <br>
-                <input type="number" id="safe-code" placeholder="קוד...">
-                <button onclick="trySafeCode()">פתח</button>
-            </div>
-            <div id="safe-opened" class="hidden">
-                <p>הכספת נפתחה!</p>
-                <div class="inventory-item" onclick="goToRoom('room-2')">
-                    🍷 גביע מוכתם בחמץ
-                    <span class="tooltip">"קח אותי למטבח לטבילה במים רותחים..."</span>
-                </div>
-            </div>
+            🗄️ כספת נעולה
+            <br>
+            <input type="number" id="safe-code" placeholder="קוד...">
+            <button onclick="trySafeCode()">פתח</button>
         </div>
     </div>
-
-    <div id="room-2" class="screen room kitchen-bg">
-        <h2>הגעתם למטבח!</h2>
-        <p>כאן תהיה חידת הגרירה והשחרור של הכלים (נגדיר אותה בשלב הבא).</p>
-    </div>
-
-    <div id="riddle-modal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close" onclick="closeModal()">&times;</span>
-            <div id="modal-text"></div>
-        </div>
-    </div>
-
-    <script src="script.js"></script>
-</body>
-</html>
